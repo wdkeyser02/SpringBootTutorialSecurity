@@ -15,11 +15,11 @@ public class HomeController {
 	
 	@GetMapping("/user")
 	public String user(Authentication authentication) {
-		return "<h1>Welcome " + authentication.getName() + "!</h1>";
+		return "<h1>Welcome User!</h1><h2>" + authentication.getName() + "</h2>";
 	}
 	
 	@GetMapping("/admin")
 	public String admin(Authentication authentication) {
-		return "<h1>Welcome \" + authentication.getName() + \"!</h1>";
+		return "<h1>Welcome Admin!</h1><h2>" + authentication.getName() + " " + authentication.getAuthorities() + "</h2>";
 	}
 }
