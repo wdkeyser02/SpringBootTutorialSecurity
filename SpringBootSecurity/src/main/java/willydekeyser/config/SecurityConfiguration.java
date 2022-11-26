@@ -4,6 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import javax.sql.DataSource;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,15 +27,13 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+			.securityMatcher(PathRequest.toH2Console()) //H2 database
 			.authorizeHttpRequests(authConfig -> {
 				authConfig.requestMatchers(HttpMethod.GET, "/").permitAll();
-				authConfig.requestMatchers("/console/**").permitAll();
 				authConfig.requestMatchers(HttpMethod.GET, "/user").hasRole("USER");
 				authConfig.requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN");
 				authConfig.anyRequest().authenticated();
 			})
-			.csrf().disable()
-			.cors().disable()
 			.headers().frameOptions().disable()
 			.and()
 			.formLogin(withDefaults()) // Login with browser and Build in Form
