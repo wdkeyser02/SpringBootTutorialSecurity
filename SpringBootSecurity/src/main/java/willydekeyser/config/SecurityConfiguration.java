@@ -14,10 +14,11 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests(authConfig -> {
-				authConfig.antMatchers("/").permitAll();
-				authConfig.antMatchers("/user/**").authenticated();
-				authConfig.antMatchers("/admin/**").denyAll();
+			.authorizeHttpRequests(authConfig -> {
+				authConfig.requestMatchers("/").permitAll();
+				authConfig.requestMatchers("/user/**").authenticated();
+				authConfig.requestMatchers("/admin/**").denyAll();
+				
 			})
 			.formLogin(Customizer.withDefaults()) // Login with browser and Form
 			.httpBasic(Customizer.withDefaults()); // Login with Insomnia and Basic Auth
