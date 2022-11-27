@@ -45,9 +45,9 @@ public class SecurityConfiguration {
     DataSource getDataSource() {
 		return DataSourceBuilder.create()
 				.driverClassName("org.h2.Driver")
-				.url("jdbc:h2:mem:user")
-				.username("willy")
-				.password("password")
+				.url("jdbc:h2:mem:testdb")
+				.username("sa")
+				.password("")
 				.build();
     }
 	
