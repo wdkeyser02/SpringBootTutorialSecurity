@@ -24,13 +24,13 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.securityMatcher(PathRequest.toH2Console()) //H2 database
 			.authorizeHttpRequests(authConfig -> {
 				authConfig.requestMatchers(HttpMethod.GET, "/").permitAll();
 				authConfig.requestMatchers(HttpMethod.GET, "/user").hasRole("USER");
 				authConfig.requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN");
 				authConfig.anyRequest().authenticated();
 			})
+			.csrf(csrf -> csrf.disable())
 			.headers().frameOptions().disable()
 			.and()
 			.formLogin(withDefaults()) // Login with browser and Build in Form
