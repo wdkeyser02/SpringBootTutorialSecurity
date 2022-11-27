@@ -5,6 +5,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import javax.sql.DataSource;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -44,22 +45,22 @@ public class SecurityConfiguration {
 		return jdbcUserDetailsManager;
 	}
 	
-//	@Bean
-//    public DataSource getDataSource() {
-//		return DataSourceBuilder.create()
-//				.driverClassName("org.h2.Driver")
-//				.url("jdbc:h2:mem:user")
-//				.username("willy")
-//				.password("password")
-//				.build();
-//    }
-	
 	@Bean
-	DataSource dataSource() {
-		return new EmbeddedDatabaseBuilder()
-			.setType(EmbeddedDatabaseType.H2)
-			.addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-			.build();
-	}
+    public DataSource getDataSource() {
+		return DataSourceBuilder.create()
+				.driverClassName("org.h2.Driver")
+				.url("jdbc:h2:mem:user")
+				.username("willy")
+				.password("password")
+				.build();
+    }
+	
+//	@Bean
+//	DataSource dataSource() {
+//		return new EmbeddedDatabaseBuilder()
+//			.setType(EmbeddedDatabaseType.H2)
+//			.addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
+//			.build();
+//	}
 	
 }
