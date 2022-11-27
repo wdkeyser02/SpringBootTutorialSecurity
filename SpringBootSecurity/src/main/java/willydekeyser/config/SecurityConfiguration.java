@@ -43,17 +43,7 @@ public class SecurityConfiguration {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 		return jdbcUserDetailsManager;
 	}
-	
-//	@Bean
-//    public DataSource getDataSource() {
-//		return DataSourceBuilder.create()
-//				.driverClassName("org.h2.Driver")
-//				.url("jdbc:h2:mem:user")
-//				.username("willy")
-//				.password("password")
-//				.build();
-//    }
-	
+		
 	@Bean
 	DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder()
