@@ -49,14 +49,5 @@ public class SecurityConfiguration {
 				.username("sa")
 				.password("")
 				.build();
-    }
-	
-//	@Bean
-//	DataSource dataSource() {
-//		return new EmbeddedDatabaseBuilder()
-//			.setType(EmbeddedDatabaseType.H2)
-//			.addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-//			.build();
-//	}
-	
+    }	
 }
