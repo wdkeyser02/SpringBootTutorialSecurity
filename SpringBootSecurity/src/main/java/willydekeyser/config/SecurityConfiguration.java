@@ -31,7 +31,9 @@ public class SecurityConfiguration {
 			.headers().frameOptions().disable()
 			.and()
 			.formLogin(withDefaults()) // Login with browser and Build in Form
-			.httpBasic(withDefaults()); // Login with Insomnia or Postman and Basic Auth       
+			.httpBasic(withDefaults()) // Login with Insomnia or Postman and Basic Auth
+			.oauth2Login(withDefaults()); // Login with Google - GitHub - Facebook or .......
+		
 		return http.build();
 	}
 		
