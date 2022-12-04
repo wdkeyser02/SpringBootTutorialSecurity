@@ -23,7 +23,7 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests(authConfig -> {
 				authConfig.requestMatchers(HttpMethod.GET, "/").permitAll();
-				authConfig.requestMatchers(HttpMethod.GET, "/user").hasRole("USER");
+				authConfig.requestMatchers(HttpMethod.GET, "/user").hasAnyAuthority("ROLE_USER", "OIDC_USER");
 				authConfig.requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN");
 				authConfig.anyRequest().authenticated();
 			})
