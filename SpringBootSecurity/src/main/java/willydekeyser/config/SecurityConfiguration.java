@@ -1,13 +1,12 @@
 package willydekeyser.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import javax.sql.DataSource;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.annotation.Order;
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -19,21 +18,51 @@ public class SecurityConfiguration {
 
 
 	@Bean
+	@Order(100)
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+			.securityMatcher("/user")			
 			.authorizeHttpRequests(authConfig -> {
-				authConfig.requestMatchers(HttpMethod.GET, "/").permitAll();
-				authConfig.requestMatchers(HttpMethod.GET, "/user").hasAnyAuthority("ROLE_USER", "OIDC_USER");
-				authConfig.requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN");
+				authConfig.requestMatchers("/user/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER");
 				authConfig.anyRequest().authenticated();
 			})
-			.csrf(csrf -> csrf.disable())
-			.headers().frameOptions().disable()
-			.and()
-			.formLogin(withDefaults()) // Login with browser and Build in Form
-			.httpBasic(withDefaults()) // Login with Insomnia or Postman and Basic Auth
-			.oauth2Login(withDefaults()); // Login with Google - GitHub - Facebook or .......
+			.formLogin(withDefaults());
+		return http.build();
+	}
+	
+	@Bean
+	@Order(101)
+	SecurityFilterChain securityFilterChain1(HttpSecurity http) throws Exception {
+		http
+			.securityMatcher("/admin")
+			.authorizeHttpRequests(authConfig -> {
+				authConfig.requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN");
+				authConfig.anyRequest().authenticated();
+			})
+			.formLogin(withDefaults());
+		return http.build();
+	}
 		
+	@Bean
+	@Order(102)
+	SecurityFilterChain securityFilterChain2(HttpSecurity http) throws Exception {
+		http
+			.securityMatcher("/")
+			.authorizeHttpRequests(authConfig -> {
+				authConfig.anyRequest().permitAll();
+			})
+			.formLogin(withDefaults());
+		return http.build();
+	}
+	
+	@Bean
+	@Order(103)
+	SecurityFilterChain securityFilterChain3(HttpSecurity http) throws Exception {
+		http
+			.authorizeHttpRequests(authConfig -> {
+				authConfig.anyRequest().denyAll();
+			})
+			.formLogin(withDefaults());
 		return http.build();
 	}
 		
