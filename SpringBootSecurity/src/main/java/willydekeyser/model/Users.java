@@ -1,5 +1,6 @@
 package willydekeyser.model;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -54,5 +55,8 @@ public class Users {
 	@Builder.Default
 	private Boolean enabled = true;
 
-	
+	private String firstName;
+	private String lastName;
+	private String emailAddress;
+	private LocalDate birthdate;
 }

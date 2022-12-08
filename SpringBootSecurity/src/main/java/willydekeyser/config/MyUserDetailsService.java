@@ -7,7 +7,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,12 +38,8 @@ public class MyUserDetailsService implements UserDetailsService{
         user.getAuthorities().stream().forEach(authority -> 
         grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority())));
         
-        return User.builder()
-        		.username(user.getUsername())
-        		.password(user.getPassword())
-        		.authorities(grantedAuthorities)
-        		.disabled(!user.getEnabled())
-        		.build();
+        return new MyUser(user.getUsername(), user.getPassword(), true, true, true, true, grantedAuthorities, 
+        		user.getFirstName(), user.getLastName(), user.getEmailAddress(), user.getBirthdate());
 	}
 
 }
