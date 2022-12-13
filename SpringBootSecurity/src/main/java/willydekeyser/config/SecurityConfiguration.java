@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,8 +28,7 @@ public class SecurityConfiguration {
 				authConfig.requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN");
 				authConfig.anyRequest().authenticated();
 			})
-			.csrf(csrf -> csrf.disable())
-			//.userDetailsService(new MyUserDetailsService())
+			.addFilterBefore(new MySecurityFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin(withDefaults()) // Login with browser and Build in Form
 			.httpBasic(withDefaults()); // Login with Insomnia or Postman and Basic Auth
 		return http.build();
@@ -45,14 +45,14 @@ public class SecurityConfiguration {
 	}
 	
 	@Bean
-	public ApplicationListener<AuthenticationSuccessEvent> successEvent() {
+	ApplicationListener<AuthenticationSuccessEvent> successEvent() {
 		return event -> {
 			System.err.println("Success Login " + event.getAuthentication().getClass().getName() + " - " + event.getAuthentication().getName());
 		};
 	}
 	
 	@Bean
-	public ApplicationListener<AuthenticationFailureBadCredentialsEvent> failureEvent() {
+	ApplicationListener<AuthenticationFailureBadCredentialsEvent> failureEvent() {
 		return event -> {
 			System.err.println("Bad Credentials Login " + event.getAuthentication().getClass().getName() + " - " + event.getAuthentication().getName());
 		};
