@@ -33,7 +33,6 @@ public class MySecurityFilter extends OncePerRequestFilter {
 //			filterChain.doFilter(request, response);
 //			return;
 //		}
-	
 		
 		if (!Collections.list(request.getParameterNames()).contains(PARAMETER_LOGIN) || !Collections.list(request.getParameterNames()).contains(PARAMETER_PASSWORD)) {
 			System.out.println("No Parameters!");
@@ -61,8 +60,6 @@ public class MySecurityFilter extends OncePerRequestFilter {
 
 //		System.out.println("Headers: " + login + " - " + password);
 		System.out.println("Parameters: " + login + " - " + password);
-		
-		
 		
 		var newContext = SecurityContextHolder.createEmptyContext();
 		UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(login, null, AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN", "ROLE_DEVELOPER"));
