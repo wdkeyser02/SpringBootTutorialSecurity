@@ -62,7 +62,7 @@ public class MySecurityFilter extends OncePerRequestFilter {
 		System.out.println("Parameters: " + login + " - " + password);
 		
 		var newContext = SecurityContextHolder.createEmptyContext();
-		UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(login, null, AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN", "ROLE_DEVELOPER"));
+		UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(login, password, AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN", "ROLE_DEVELOPER"));
 		newContext.setAuthentication(authReq);
 		SecurityContextHolder.setContext(newContext);		
 		filterChain.doFilter(request, response);
