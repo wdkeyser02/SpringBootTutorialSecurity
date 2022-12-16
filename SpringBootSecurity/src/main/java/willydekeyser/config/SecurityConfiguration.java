@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +22,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		var providerManager = new ProviderManager(new MySecurityAuthenticationProvider());
 		http
 			.authorizeHttpRequests(authConfig -> {
 				authConfig.requestMatchers(HttpMethod.GET, "/").permitAll();
@@ -28,7 +30,8 @@ public class SecurityConfiguration {
 				authConfig.requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN");
 				authConfig.anyRequest().authenticated();
 			})
-			.addFilterBefore(new MySecurityFilter(), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new MySecurityFilter(providerManager), UsernamePasswordAuthenticationFilter.class)
+			.authenticationProvider(new MySecurityAuthenticationProvider())
 			.formLogin(withDefaults()) // Login with browser and Build in Form
 			.httpBasic(withDefaults()); // Login with Insomnia or Postman and Basic Auth
 		return http.build();
