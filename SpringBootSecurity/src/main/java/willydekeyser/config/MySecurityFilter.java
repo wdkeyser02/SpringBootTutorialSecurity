@@ -29,10 +29,9 @@ public class MySecurityFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		System.out.println("\nBefore filterchain\n");
+		System.out.println("Before filterchain");
 		
 		if (!Collections.list(request.getHeaderNames()).contains(HEADER_LOGIN) || !Collections.list(request.getHeaderNames()).contains(HEADER_PASSWORD)) {
-			System.out.println("No Headers!");
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -47,10 +46,10 @@ public class MySecurityFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (AuthenticationException e) {
 			response.setStatus(HttpStatus.FORBIDDEN.value());
-			response.getWriter().println("You are not the Developer!");
-			return;
+			response.getWriter().println("Invalid credentials!");
 		}
-		System.out.println("\nAfter filterchain\n");
+		
+		System.out.println("After filterchain\n");
 	}
 
 }
