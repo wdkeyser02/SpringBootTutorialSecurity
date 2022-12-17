@@ -24,6 +24,7 @@ public class MySecurityAuthenticationProvider implements AuthenticationProvider 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
+		System.err.println("MySecurityAuthenticationProvider ");
 		var authRequest = (MySecurityAuthentication) authentication;
 		var password = authRequest.getPassword();
 		var username = authRequest.getName();
@@ -34,8 +35,7 @@ public class MySecurityAuthenticationProvider implements AuthenticationProvider 
 		MyUser user = (MyUser) userDetailsService.loadUserByUsername(username);
         if (!this.passwordEncoder.matches(password.toString(), user.getPassword()) || !user.getUsername().equals(username)) {
 			throw new BadCredentialsException("Invalid credentials!");
-		}
-        System.err.println("MySecurityAuthenticationProvider ");
+		} 
 		return MySecurityAuthentication.authenticated(user);
 	}
 
