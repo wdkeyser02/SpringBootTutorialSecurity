@@ -30,7 +30,7 @@ public class SecurityConfiguration {
 			})
 			.apply(new MySecurityLoginConfigurer(userDetailsService))
 			.and()
-			.formLogin(withDefaults()) // Login with browser and Build in Form
+			.formLogin(withDefaults()) // Login with browser and Build in Form	
 			.httpBasic(withDefaults()); // Login with Insomnia or Postman and Basic Auth
 		return http.build();
 	}
